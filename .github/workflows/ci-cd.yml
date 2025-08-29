@@ -1,9 +1,9 @@
 name: CI/CD Pipeline
 
 on:
-  pull_request:
-    branches: [main]
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
 
 jobs:
@@ -23,13 +23,29 @@ jobs:
       run: npm install
 
     - name: Run Tests
-      run: npm run test -- --coverage --fail-on-error
-      
+      run: npm run test -- --coverage --watchAll=false
+
     - name: Build Application
       run: npm run build
+
+  deploy:
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+
+    - name: Install Dependencies
+      run: npm install
 
     - name: Deploy to GitHub Pages
       run: npm run deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
