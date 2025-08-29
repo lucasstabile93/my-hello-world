@@ -1,5 +1,8 @@
 import logo from './logo.svg';
+import Hello from './Hello';
 import './App.css';
+import Counter from './Counter';
+import Mensagem from './Mensagem';
 
 function App() {
   return (
@@ -7,7 +10,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Edite o arquivo <code>src/App.js</code> e salve para recarregar.
         </p>
         <a
           className="App-link"
@@ -15,8 +18,11 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Aprenda React
         </a>
+        <Mensagem/>
+        {/* <Hello />
+        <Counter/> */}
       </header>
     </div>
   );
