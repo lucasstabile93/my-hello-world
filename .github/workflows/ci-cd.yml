@@ -27,7 +27,7 @@ jobs:
 
       # 4. Roda os testes e mostra um relatório de cobertura de testes (se falhar, para aqui)
       - name: Run Tests
-        run: npm test --coverage --watchAll=false
+        run: npm run coverage
 
       # 5. Faz o build
       - name: Build Application
