@@ -1,35 +1,41 @@
-name: CI/CD Pipeline
+name: CI/CD - React App
 
 on:
-  pull_request:
-    branches: [main]
   push:
-    branches: [main]
+    branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v2
+      # 1. Baixa o código do repositório
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'
+      # 2. Configura o Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
 
-    - name: Install Dependencies
-      run: npm install
+      # 3. Instala dependências
+      - name: Install Dependencies
+        run: npm install
 
-    - name: Run Tests
-      run: npm run test -- --coverage --fail-on-error
-      
-    - name: Build Application
-      run: npm run build
+      # 4. Roda os testes e mostra um relatório de cobertura de testes (se falhar, para aqui)
+      - name: Run Tests
+        run: npm run coverage
 
-    - name: Deploy to GitHub Pages
-      run: npm run deploy
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # 5. Faz o build
+      - name: Build Application
+        run: npm run build
 
+      # 6. Publica no GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
